@@ -86,7 +86,11 @@ class Tweet(snscrape.base.Item):
 	content = snscrape.base._DeprecatedProperty('content', lambda self: self.rawContent, 'rawContent')
 
 	def __str__(self):
-		return self.url
+		t_text = json.dumps(self.rawContent)
+		t_date = self.date.isoformat()
+		u_date = self.user.created.isoformat()
+		is_retweet = self.retweetedTweet is not None
+		return f'"{self.id}","{t_date}","{t_text}",{self.retweetCount},{self.viewCount},{is_retweet},"{self.user.id}","{self.user.displayName}","{u_date}",{self.user.followersCount},{self.user.friendsCount},"{self.user.rawDescription}","{self.user.link}"'
 
 
 @dataclasses.dataclass
